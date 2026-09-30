@@ -401,6 +401,33 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 footer a{text-decoration:none}
 footer a:hover{color:var(--text)}
 
+
+/* ---------- selected work ---------- */
+.work{padding-block:clamp(40px,6vw,80px) clamp(90px,11vw,150px)}
+.work-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.4vw,32px)}
+.wcard{display:grid;gap:18px;text-decoration:none;color:var(--text);min-width:0}
+.wmedia{position:relative;aspect-ratio:16/10;border-radius:16px;overflow:hidden;border:1px solid var(--line-2);background:var(--panel);max-width:100%;transition:border-color .3s,box-shadow .4s var(--ease)}
+.wmedia img,.wmedia video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease),opacity .4s}
+.wmedia.vert .bgblur{filter:blur(28px) saturate(1.2);transform:scale(1.25);opacity:.7}
+.wmedia.vert .fg,.wmedia.vert video{object-fit:contain}
+.wmedia video{opacity:0}
+.wcard.live .wmedia video{opacity:1}
+.wcard:hover .wmedia,.wcard:focus-visible .wmedia{border-color:var(--violet);box-shadow:0 30px 80px -30px rgba(91,132,255,.5)}
+.wcard:hover .wmedia>img:not(.bgblur){transform:scale(1.04)}
+.wtag,.wplay{position:absolute;z-index:2;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px;border-radius:999px;background:rgba(7,7,13,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:var(--text);border:1px solid rgba(255,255,255,.14)}
+.wtag{top:12px;left:12px}
+.wplay{bottom:12px;right:12px;transition:opacity .3s}
+.wcard.live .wplay{opacity:0}
+.winfo{display:grid;gap:8px;min-width:0}
+.wmeta{color:var(--muted)}
+.winfo h3{font-size:clamp(28px,3vw,40px);font-weight:800;line-height:1}
+.winfo p{margin:0;color:var(--muted);max-width:52ch}
+.wlink{display:inline-flex;gap:8px;align-items:center;font-weight:600;font-size:15px;margin-top:4px}
+.wlink .arr{transition:transform .25s var(--ease)}
+.wcard:hover .wlink .arr{transform:translateX(6px)}
+.wcard:hover .wlink{color:var(--teal)}
+@media (max-width:720px){.work-grid{grid-template-columns:minmax(0,1fr)}}
+
 /* ---------- responsive ---------- */
 @media (max-width:1020px){
   .chapters{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -450,10 +477,10 @@ footer a:hover{color:var(--text)}
   <a class="brand" href="#top" aria-label="Vipin Sao, back to top"><span class="rec" aria-hidden="true"></span>Vipin Sao</a>
   <nav class="nav" aria-label="Sections">
     <a href="#reel" data-sec="reel">Reel</a>
-    <a href="#make" data-sec="make">Work</a>
+    <a href="#work" data-sec="work">Work</a>
+    <a href="#make" data-sec="make">Services</a>
     <a href="#five" data-sec="five">5s test</a>
     <a href="#process" data-sec="process">Process</a>
-    <a href="#formats" data-sec="formats">Formats</a>
     <a class="cta-mini contra-link" href="https://contra.com/" target="_blank" rel="noopener">Hire me</a>
   </nav>
 </header>
@@ -512,6 +539,33 @@ footer a:hover{color:var(--text)}
     </div>
     <div class="chapters" id="chapters" aria-label="Chapters"></div>
     <p class="kbd-hint mono">Click a chapter to jump · <kbd>Space</kbd> play / pause · <kbd>←</kbd><kbd>→</kbd> step one second · <kbd>,</kbd><kbd>.</kbd> step one frame</p>
+  </section>
+
+  <!-- SELECTED WORK -->
+  <section class="work wrap" id="work" data-scene="Selected work">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Selected work · 2026</span>
+      <h2>Four briefs. Four <span class="grad">different worlds.</span></h2>
+      <p class="lede">Each piece answers a real kind of job post: a SaaS demo, a social ad, a UI/UX case study and a Kajabi build. Hover to preview, open one for the full story.</p>
+    </div>
+    <div class="work-grid">
+      <a class="wcard reveal" href="work/driftlens/" data-video="assets/work/driftlens.mp4">
+        <div class="wmedia"><img src="assets/work/driftlens.jpg" alt="Driftlens product demo cover" loading="lazy"><span class="wtag">Concept</span><span class="wplay" aria-hidden="true">▶ Preview</span></div>
+        <div class="winfo"><span class="wmeta mono">SaaS product demo · 16:9 · 0:23</span><h3>Driftlens</h3><p>Docs that keep up with your code. One API change, followed from pull request to fix.</p><span class="wlink">View case study <span class="arr" aria-hidden="true">→</span></span></div>
+      </a>
+      <a class="wcard reveal" href="work/leftova/" data-video="assets/work/leftova.mp4">
+        <div class="wmedia vert"><img class="bgblur" src="assets/work/leftova.jpg" alt="" aria-hidden="true" loading="lazy"><img class="fg" src="assets/work/leftova.jpg" alt="Leftova vertical ad cover" loading="lazy"><span class="wtag">Concept</span><span class="wplay" aria-hidden="true">▶ Preview</span></div>
+        <div class="winfo"><span class="wmeta mono">Short-form app ad · 9:16 · 0:20</span><h3>Leftova</h3><p>A scroll-stopping Reels and TikTok ad. Snap your fridge, cook what you already have.</p><span class="wlink">View case study <span class="arr" aria-hidden="true">→</span></span></div>
+      </a>
+      <a class="wcard reveal" href="work/streak86/" data-video="assets/work/streak86.mp4">
+        <div class="wmedia"><img src="assets/work/streak86.jpg" alt="Streak '86 case study cover" loading="lazy"><span class="wtag">Concept</span><span class="wplay" aria-hidden="true">▶ Preview</span></div>
+        <div class="winfo"><span class="wmeta mono">Mobile UI/UX case study · 16:9 · 0:39</span><h3>Streak ’86</h3><p>A retro habit tracker, from kickoff questions to a 38-component Figma design system.</p><span class="wlink">View case study <span class="arr" aria-hidden="true">→</span></span></div>
+      </a>
+      <a class="wcard reveal" href="work/stillwater/" data-video="assets/work/stillwater.mp4">
+        <div class="wmedia"><img src="assets/work/stillwater.jpg" alt="Stillwater House retreat page cover" loading="lazy"><span class="wtag">Concept</span><span class="wplay" aria-hidden="true">▶ Preview</span></div>
+        <div class="winfo"><span class="wmeta mono">Kajabi page + booking · 16:9 · 0:46</span><h3>Stillwater House</h3><p>A retreat page that fills its own rooms, with room booking, checkout and automations.</p><span class="wlink">View case study <span class="arr" aria-hidden="true">→</span></span></div>
+      </a>
+    </div>
   </section>
 
   <div class="marquee" aria-hidden="true">
@@ -923,6 +977,19 @@ new IntersectionObserver(es => es.forEach(e => {
 buildChapters(); render();
 function playFromReel(t) { $('#reel').scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'start'}); setTimeout(() => seek(t, true), reduce ? 0 : 450); }
 $('#heroPlay').addEventListener('click', () => playFromReel(0));
+
+
+/* ---------- selected work: hover preview ---------- */
+if (matchMedia('(hover:hover) and (pointer:fine)').matches && !reduce) {
+  $$('.wcard').forEach(card => {
+    let v = null;
+    card.addEventListener('pointerenter', () => {
+      if (!v) { v = document.createElement('video'); v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'auto'; v.src = card.dataset.video; v.setAttribute('aria-hidden', 'true'); card.querySelector('.wmedia').appendChild(v); }
+      v.currentTime = 0; v.play().then(() => card.classList.add('live')).catch(() => {});
+    });
+    card.addEventListener('pointerleave', () => { card.classList.remove('live'); v?.pause(); });
+  });
+}
 
 /* ---------- what I make: tabs + 5s auto-advance ---------- */
 (() => {
