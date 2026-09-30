@@ -307,7 +307,7 @@ def page(slug):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>🎬 {p['name']} · Vipin Sao Portfolio</title>
+<title>{p['name']} · Vipin Sao Portfolio</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%8E%AC%3C/text%3E%3C/svg%3E">
 <meta name="description" content="{p['name']}: {p['kicker']}. Case study by Vipin Sao, AI video &amp; motion designer.">
 <meta property="og:title" content="{p['title']} · Vipin Sao">
