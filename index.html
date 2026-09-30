@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Vipin Sao Showreel</title>
-<meta name="description" content="Vipin Sao, AI-powered video and motion designer for SaaS and startups. Product demos, short-form ads, motion graphics and social content.">
-<meta property="og:title" content="Vipin Sao, AI Video & Motion Designer">
+<title>🎬 Vipin Sao Portfolio</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%8E%AC%3C/text%3E%3C/svg%3E">
+<meta name="description" content="Vipin Sao, AI-powered video and motion designer for SaaS and startups. Product demos, short-form ads, motion graphics, social content, plus websites and web apps built with React, Next.js and Node.js.">
+<meta property="og:title" content="Vipin Sao, AI Video & Motion Designer + Web Developer">
 <meta property="og:description" content="Let's make your product impossible to ignore.">
 <meta property="og:image" content="assets/poster.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,8 +50,7 @@ button{font:inherit;color:inherit}
 
 /* ---------- atmosphere ---------- */
 #aurora{position:fixed;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none}
-.grain{position:fixed;inset:-50%;z-index:-1;pointer-events:none;opacity:.07;mix-blend-mode:overlay;animation:grain 1.2s steps(6) infinite}
-@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.045;mix-blend-mode:overlay}
 
 /* ---------- viewfinder frame ---------- */
 .mono{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
@@ -428,6 +428,31 @@ footer a:hover{color:var(--text)}
 .wcard:hover .wlink{color:var(--teal)}
 @media (max-width:720px){.work-grid{grid-template-columns:minmax(0,1fr)}}
 
+
+/* ---------- web & software ---------- */
+.build{padding-block:clamp(90px,11vw,150px);border-top:1px solid var(--line)}
+.build-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4vw,64px);align-items:center}
+.stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.code{margin:0;border:1px solid var(--line-2);border-radius:16px;background:rgba(10,10,18,.9);overflow:hidden;box-shadow:0 40px 100px -40px rgba(154,134,255,.35);min-width:0}
+.code figcaption{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);color:var(--muted)}
+.code .lights{display:flex;gap:6px}.code .lights i{width:10px;height:10px;border-radius:50%;background:#3a3950}
+.code .lights i:nth-child(1){background:#ff5f57}.code .lights i:nth-child(2){background:#febc2e}.code .lights i:nth-child(3){background:#28c840}
+.code .live{margin-left:auto;color:var(--teal)}
+.code pre{margin:0;padding:18px 20px;overflow-x:auto;font:400 13.5px/1.75 var(--mono);color:#d9d6ef}
+.code .k{color:var(--violet)}.code .f{color:#7fa6ff}.code .n{color:var(--gold)}.code .c{color:var(--dim)}
+.offers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:clamp(40px,5vw,64px)}
+.offer{border:1px solid var(--line-2);border-radius:16px;padding:22px;background:rgba(12,12,20,.6);display:grid;gap:10px;align-content:start;transition:border-color .3s,transform .4s var(--ease);min-width:0}
+.offer:hover{border-color:var(--violet);transform:translateY(-4px)}
+.offer h3{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.offer p{margin:0;color:var(--muted);font-size:15px}
+.flow{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:f}
+.flow li{counter-increment:f;display:grid;gap:4px;padding-top:14px;border-top:1px solid var(--line-2);position:relative}
+.flow li::before{content:counter(f,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:.12em}
+.flow b{font-size:16px}
+.flow span{color:var(--muted);font-size:14px}
+@media (max-width:1020px){.build-grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:720px){.offers,.flow{grid-template-columns:minmax(0,1fr)}}
+
 /* ---------- responsive ---------- */
 @media (max-width:1020px){
   .chapters{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -457,13 +482,12 @@ footer a:hover{color:var(--text)}
   .beats{grid-template-columns:minmax(0,1fr)}
   .steps{grid-template-columns:minmax(0,1fr)}
   .eng-grid{grid-template-columns:minmax(0,1fr)}
-  .hud .tc .scene{display:none}
+  .hud{display:none}
   .mg .dots i{transform:rotate(calc(var(--k) * 22.5deg)) translateY(-120px)}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;animation-delay:0s!important;transition-duration:.001ms!important}
   html{scroll-behavior:auto}
-  .grain{animation:none}
   .track{animation:none;flex-wrap:wrap;width:auto}
 }
 </style>
@@ -479,7 +503,7 @@ footer a:hover{color:var(--text)}
     <a href="#reel" data-sec="reel">Reel</a>
     <a href="#work" data-sec="work">Work</a>
     <a href="#make" data-sec="make">Services</a>
-    <a href="#five" data-sec="five">5s test</a>
+    <a href="#build" data-sec="build">Web</a>
     <a href="#process" data-sec="process">Process</a>
     <a class="cta-mini contra-link" href="https://contra.com/vipin_sao_z8eilxkm/work?r=vipin_sao_z8eilxkm" target="_blank" rel="noopener">Hire me</a>
   </nav>
@@ -503,7 +527,7 @@ footer a:hover{color:var(--text)}
       <div class="intro">
         <span class="hi">Hi, I'm</span>
         <span class="name">Vipin Sao</span>
-        <p class="role"><strong>AI-Powered Video &amp; Motion Designer</strong> for <span class="grad" style="font-weight:600">SaaS &amp; Startups</span>. I turn product ideas into clear, engaging visuals.</p>
+        <p class="role"><strong>AI Video &amp; Motion Designer + Web Developer</strong> for <span class="grad" style="font-weight:600">SaaS &amp; Startups</span>. I turn product ideas into clear, engaging visuals, and build the websites and web apps around them with React, Next.js and Node.js.</p>
       </div>
       <div class="hero-cta">
         <button class="btn btn-solid magnetic" id="heroPlay" type="button"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z" fill="currentColor"/></svg>Play showreel</button>
@@ -699,6 +723,47 @@ footer a:hover{color:var(--text)}
     </div>
   </section>
 
+
+  <!-- WEB & SOFTWARE -->
+  <section class="build" id="build" data-scene="Web &amp; software">
+    <div class="wrap">
+      <div class="build-grid">
+        <div class="sec-head reveal" style="margin:0">
+          <span class="eyebrow">Beyond video · Web &amp; software</span>
+          <h2>I also build the product <span class="grad">around the story.</span></h2>
+          <p class="lede">Websites, web apps and the services behind them. I use Claude to move fast, and my own engineering to plan the architecture, review every change and test it before anything ships.</p>
+          <div class="stack" aria-label="Tech stack">
+            <span class="chip"><i></i>JavaScript</span><span class="chip"><i></i>React</span><span class="chip"><i></i>Next.js</span><span class="chip"><i></i>Node.js</span>
+            <span class="chip"><i></i>HTML &amp; CSS</span><span class="chip"><i></i>Claude (AI)</span><span class="chip"><i></i>Git &amp; GitHub</span><span class="chip"><i></i>Figma</span>
+          </div>
+        </div>
+        <figure class="code reveal" aria-label="Code excerpt from this website's showreel player">
+          <figcaption class="mono"><span class="lights"><i></i><i></i><i></i></span>index.html · showreel player<span class="live">From this site</span></figcaption>
+<pre><code><span class="k">function</span> <span class="f">seek</span>(s, play) {
+  vid.currentTime = <span class="f">Math.min</span>(<span class="f">Math.max</span>(<span class="n">0</span>, s), dur - <span class="n">.01</span>);
+  <span class="f">render</span>();
+  <span class="k">if</span> (play) {
+    userPaused = <span class="n">false</span>;
+    vid.<span class="f">play</span>().<span class="f">catch</span>(() => {});
+  }
+}
+<span class="c">// chapters, scrubbing, frame-stepping and keyboard
+// controls: written, reviewed and tested before shipping</span></code></pre>
+        </figure>
+      </div>
+      <div class="offers">
+        <div class="offer reveal"><h3>Landing pages &amp; sites</h3><p>Fast, responsive pages that load quickly and turn visitors into leads. Like this one: hand-built, tested on phone, tablet and desktop, and deployed on GitHub Pages.</p></div>
+        <div class="offer reveal"><h3>Web apps</h3><p>Interactive front ends in React and Next.js, from dashboards and onboarding flows to booking and checkout.</p></div>
+        <div class="offer reveal"><h3>Backends &amp; APIs</h3><p>Node.js services, integrations and automations that connect your product to the tools you already use.</p></div>
+      </div>
+      <ol class="flow reveal" aria-label="How Claude fits into my process">
+        <li><b>I scope and design it</b><span>Goals, structure and the parts that must not break.</span></li>
+        <li><b>Claude helps me build it faster</b><span>Drafts, refactors and boilerplate in minutes, not days.</span></li>
+        <li><b>I review, test and ship it</b><span>Every change read, checked on real screen sizes, then deployed.</span></li>
+      </ol>
+    </div>
+  </section>
+
   <!-- 5 SECOND TEST -->
   <section class="five-test" id="five" data-scene="5-second test">
     <div class="wrap">
@@ -801,8 +866,8 @@ footer a:hover{color:var(--text)}
     <div class="halo" aria-hidden="true"></div>
     <div class="wrap">
       <h2 class="reveal">Let's make your product<br><span class="grad">impossible to ignore.</span></h2>
-      <p class="who"><b>Vipin Sao</b> · AI Video &amp; Motion Designer</p>
-      <div class="tags"><span class="chip">Product demos</span><span class="chip">Motion graphics</span><span class="chip">Short-form ads</span><span class="chip">Social content</span></div>
+      <p class="who"><b>Vipin Sao</b> · AI Video &amp; Motion Designer · Web Developer</p>
+      <div class="tags"><span class="chip">Product demos</span><span class="chip">Motion graphics</span><span class="chip">Short-form ads</span><span class="chip">Social content</span><span class="chip">Websites &amp; web apps</span></div>
       <p class="avail"><span class="dot"></span>Available for one-off projects &amp; ongoing creative work</p>
       <a class="btn btn-solid magnetic contra-link" href="https://contra.com/vipin_sao_z8eilxkm/work?r=vipin_sao_z8eilxkm" target="_blank" rel="noopener">Message me on Contra <span class="arr" aria-hidden="true">→</span></a>
     </div>
@@ -810,7 +875,7 @@ footer a:hover{color:var(--text)}
 </main>
 
 <footer>
-  <div class="wrap mono"><span>© 2026 Vipin Sao</span><span>AI · Motion · Video</span><a href="#top">Back to top ↑</a></div>
+  <div class="wrap mono"><span>© 2026 Vipin Sao</span><span>AI · Motion · Video · Web</span><a href="#top">Back to top ↑</a></div>
 </footer>
 
 <script>
@@ -824,34 +889,42 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
-/* ---------- aurora background (low-res canvas = free blur) ---------- */
+/* ---------- aurora background: slow drift, eased pointer + scroll ---------- */
 (() => {
   const c = $('#aurora'), g = c.getContext('2d');
-  let w, h, mx = .5, my = .3, t = Math.random() * 100;
+  let w, h;
+  // each orb loops on its own slow period (seconds) so the light never repeats in sync
   const orbs = [
-    {x:.18,y:.12,r:.55,c:[122,70,255],a:.55,s:.00011},
-    {x:.62,y:.62,r:.45,c:[20,170,130],a:.32,s:.00016},
-    {x:.88,y:.85,r:.5, c:[40,80,255], a:.45,s:.00013}
+    {x:.20,y:.14,r:.60,c:[122,70,255],a:.50,px:61,py:47,ax:.07,ay:.05,ph:0},
+    {x:.62,y:.60,r:.48,c:[22,168,132],a:.26,px:73,py:53,ax:.08,ay:.06,ph:2.1},
+    {x:.86,y:.84,r:.55,c:[42,84,255], a:.40,px:67,py:59,ax:.06,ay:.06,ph:4.2}
   ];
-  const size = () => { w = c.width = Math.ceil(innerWidth / 6); h = c.height = Math.ceil(innerHeight / 6); };
+  const tgt = {x:.5, y:.4, s:0}, cur = {x:.5, y:.4, s:0};
+  const size = () => { w = c.width = Math.ceil(innerWidth / 4); h = c.height = Math.ceil(innerHeight / 4); };
   size(); addEventListener('resize', size);
-  addEventListener('pointermove', e => { mx = e.clientX / innerWidth; my = e.clientY / innerHeight; });
-  const draw = () => {
+  addEventListener('pointermove', e => { tgt.x = e.clientX / innerWidth; tgt.y = e.clientY / innerHeight; }, {passive:true});
+  const TAU = Math.PI * 2;
+  const draw = sec => {
+    tgt.s = scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    // ease toward pointer/scroll so the light glides instead of jumping
+    cur.x += (tgt.x - cur.x) * .03; cur.y += (tgt.y - cur.y) * .03; cur.s += (tgt.s - cur.s) * .06;
+    g.globalCompositeOperation = 'source-over';
     g.fillStyle = '#07070d'; g.fillRect(0, 0, w, h);
     g.globalCompositeOperation = 'lighter';
-    const sy = scrollY / Math.max(1, document.body.scrollHeight - innerHeight);
     orbs.forEach((o, i) => {
-      const ox = (o.x + Math.sin(t * o.s * 1000 + i * 2) * .08 + (mx - .5) * .06 * (i + 1)) * w;
-      const oy = ((o.y + Math.cos(t * o.s * 900 + i) * .07 + (my - .5) * .05) - sy * .15 * (i - 1)) * h;
+      const ox = (o.x + Math.sin(sec / o.px * TAU + o.ph) * o.ax + (cur.x - .5) * .035 * (i + 1)) * w;
+      const oy = (o.y + Math.cos(sec / o.py * TAU + o.ph) * o.ay + (cur.y - .5) * .03 - cur.s * .12 * (i - 1)) * h;
       const r = o.r * Math.max(w, h);
       const grd = g.createRadialGradient(ox, oy, 0, ox, oy, r);
-      grd.addColorStop(0, `rgba(${o.c},${o.a})`); grd.addColorStop(1, `rgba(${o.c},0)`);
+      grd.addColorStop(0, `rgba(${o.c},${o.a})`);
+      grd.addColorStop(.45, `rgba(${o.c},${o.a * .45})`);
+      grd.addColorStop(1, `rgba(${o.c},0)`);
       g.fillStyle = grd; g.fillRect(0, 0, w, h);
     });
-    g.globalCompositeOperation = 'source-over';
   };
-  const loop = () => { t += 16; draw(); if (!reduce) requestAnimationFrame(loop); };
-  loop();
+  const t0 = performance.now() - Math.random() * 30000;
+  const loop = now => { draw((now - t0) / 1000); requestAnimationFrame(loop); };
+  if (reduce) draw(0); else requestAnimationFrame(loop);
 })();
 
 /* ---------- film grain ---------- */
