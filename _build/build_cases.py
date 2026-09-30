@@ -8,7 +8,7 @@ import json, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 CONTRA_URL = "https://contra.com/vipin_sao_z8eilxkm/work?r=vipin_sao_z8eilxkm"   # your Contra profile (also in index.html)
-ORDER = ["driftlens", "leftova", "streak86", "stillwater"]
+ORDER = ["driftlens", "leftova", "streak86", "stillwater", "lowtide"]
 
 PROJECTS = {
 # ---------------------------------------------------------------- Driftlens
@@ -269,6 +269,84 @@ h1 em,h2 em,.c-hero .tagline em{color:var(--sage)}
 .qa li::before{content:"✓";color:var(--sage);font-weight:600}
 @media (max-width:900px){.wire{grid-template-columns:minmax(0,1fr)}.wire .col+.col::before{left:24px;top:-14px;width:1px;height:14px}.qa{grid-template-columns:minmax(0,1fr)}}
 """),
+# ---------------------------------------------------------------- Low Tide House
+"lowtide": dict(
+  title="Low Tide House Kajabi Prototype", name="Low Tide House",
+  kicker="Kajabi retreat page + booking · Live prototype",
+  tagline="A retreat page that <em>books itself.</em>",
+  summary="A working prototype of a Kajabi retreat page for a meditation teacher opening a new retreat house. Guests pick a date and a room, see real availability, register, pay through the existing Kajabi checkout and get their confirmation automatically. Every block is mapped to the Kajabi feature that powers it.",
+  concept="Concept project. Fictional retreat, AI-generated photography, no payments taken.",
+  cta='<div class="cta-row" style="justify-content:flex-start;margin-top:22px"><a class="btn" href="demo/">Try the live prototype <span aria-hidden="true">→</span></a><a class="btn alt" href="demo/#notes">Open with Kajabi notes</a></div>',
+  facts=[("Type","Retreat page + booking flow"),("Platform","Kajabi"),("Length","1:23 walkthrough"),("Year","2026"),("Role","Concept, page design, booking flow, build"),("Live demo","Works on phone and desktop")],
+  duration=83.0, vertical=False,
+  chapters=[(0,"Title"),(2.8,"Landing page"),(8.2,"Dates"),(13,"Waitlist"),(20.9,"Choose a room"),(26.3,"Registration"),(36.3,"Payment"),(42.9,"Confirmation"),(49.6,"Live availability"),(57,"Build notes"),(67.2,"Mobile"),(79.9,"End card")],
+  problem="A meditation teacher opening a new retreat house wants to sell a few small weekends from one page. Guests need to choose a date and a private or shared room, a room must never be sold twice, and everything has to run through the Kajabi checkout they already use.",
+  idea="Build it as a working prototype rather than a mockup: real date and room selection, live availability, a waitlist when a room is full, and a registration form. Then label every block with the Kajabi feature that powers it, so the real build is a set-up job, not guesswork.",
+  beats=[
+    (2.8,"s1","A page built from the host’s own content","Hero, key facts, what’s included, the weekend schedule, the teacher and an FAQ. Calm, coastal and easy to read on any screen."),
+    (13,"s2","Dates and rooms with real availability","Three weekends each track their own places. In January the private room is sold out, so its button becomes Join the waitlist instead of a dead end."),
+    (26.3,"s3","Registration that Kajabi keeps","Dietary needs, meditation experience, how you’ll arrive and anything the host should know. In Kajabi these are custom checkout fields, saved on the guest’s contact record."),
+    (36.3,"s4","Payment through the existing checkout","No new payment setup. The host’s Kajabi checkout, receipts and payment settings stay exactly as they are, with the booking summary beside the form."),
+    (42.9,"s5","Confirmation and next steps, automatically","Confirmation email, a tag for that date and room, and a reminder with directions and a packing list 7 days before. The room count drops the moment someone books."),
+    (57,"s6","Build notes for the handover","One switch labels every block with the Kajabi feature behind it, so the host can see exactly how their page is wired and update it later."),
+  ],
+  special="""
+<section class="c-special"><div class="wrap">
+  <div class="lt-try">
+    <div class="rv">
+      <span class="kicker">Try it yourself</span>
+      <h2 style="margin-top:14px">Book a room <em>right here.</em></h2>
+      <p class="lede" style="margin-top:16px">This is the real prototype, running inside a phone. Pick a weekend, choose a room and go through the booking. Nothing is charged.</p>
+      <ul class="lt-list"><li>Three retreat dates with their own availability</li><li>Private and shared rooms with limited places</li><li>Waitlist when a room is sold out</li><li>Registration, payment step and confirmation email</li></ul>
+      <div class="cta-row" style="justify-content:flex-start;margin-top:24px"><a class="btn" href="demo/">Open full screen <span aria-hidden="true">→</span></a><a class="btn alt" href="demo/#notes">With Kajabi notes</a></div>
+    </div>
+    <div class="lt-phone rv"><iframe src="demo/" title="Low Tide House prototype on a phone" loading="lazy"></iframe></div>
+  </div>
+
+  <span class="kicker rv" style="display:block;margin-top:clamp(72px,9vw,120px)">How it maps to Kajabi</span>
+  <h2 class="rv" style="margin-top:14px">Every block has a <em>Kajabi home.</em></h2>
+  <div class="lt-table rv" role="table" aria-label="Page blocks and the Kajabi features behind them">
+    <div class="tr th" role="row"><span role="columnheader">On the page</span><span role="columnheader">In Kajabi</span></div>
+    <div class="tr" role="row"><span role="cell">Retreat landing page</span><span role="cell">Landing Page built from the host’s copy and photos</span></div>
+    <div class="tr" role="row"><span role="cell">Retreat dates</span><span role="cell">A set of Offers for each weekend, so places are counted per date</span></div>
+    <div class="tr" role="row"><span role="cell">Private and shared rooms</span><span role="cell">One Offer per room type with a <b>quantity limit</b> (3 private, 4 shared beds)</span></div>
+    <div class="tr" role="row"><span role="cell">Sold out → waitlist</span><span role="cell">The Offer’s sold-out page, set to a waitlist Form that tags the guest</span></div>
+    <div class="tr" role="row"><span role="cell">Registration details</span><span role="cell"><b>Custom checkout fields</b>: Select, Radio buttons, Text area</span></div>
+    <div class="tr" role="row"><span role="cell">Payment</span><span role="cell">The host’s existing Kajabi checkout and payment settings</span></div>
+    <div class="tr" role="row"><span role="cell">Confirmation</span><span role="cell">Offer automations: send email, add tag for date and room</span></div>
+    <div class="tr" role="row"><span role="cell">Reminder, 7 days before</span><span role="cell">Email scheduled to that weekend’s tag, with directions and packing list</span></div>
+  </div>
+
+  <div class="lt-qa">
+    <div class="rv"><h3>Launch test plan for the real build</h3><ul><li>A test purchase for every room on every date</li><li>A refund, and the place returning to stock</li><li>Quantity limit reached → sold-out page → waitlist</li><li>Custom fields saved on the contact</li><li>Confirmation and reminder emails delivered</li></ul></div>
+    <div class="rv"><h3>Checked on this prototype</h3><ul><li>Phone, tablet and desktop widths</li><li>Every booking path, including the waitlist</li><li>Form validation and error messages</li><li>Keyboard use and visible focus</li><li>No layout breaks with build notes on</li></ul></div>
+  </div>
+</div></section>""",
+  fonts="family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Albert+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500",
+  style="""
+:root{--bg:#eef2f1;--surface:#f9fbfa;--text:#14232b;--muted:#5a6a70;--line:rgba(20,35,43,.10);--line-strong:rgba(20,35,43,.2);
+--accent:#2d5b67;--accent-2:#c2654b;--on-accent:#fff;
+--display:"Newsreader",Georgia,"Times New Roman",serif;--body:"Albert Sans",ui-sans-serif,system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+--display-weight:500;--display-tracking:-.01em;--em-style:italic;--radius:14px;--shadow:0 30px 70px -40px rgba(20,35,43,.45);color-scheme:light}
+.lt-try{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(28px,5vw,80px);align-items:center}
+.lt-list{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:10px}
+.lt-list li{display:flex;gap:10px;align-items:baseline}
+.lt-list li::before{content:"";width:8px;height:8px;border-radius:50%;background:#2f7d62;flex:none;transform:translateY(-1px)}
+.lt-phone{width:384px;height:760px;max-width:100%;border-radius:46px;background:var(--text);padding:12px;box-shadow:0 50px 100px -50px rgba(20,35,43,.7)}
+.lt-phone iframe{width:100%;height:100%;border:0;border-radius:36px;background:#fff}
+.lt-table{margin-top:34px;border:1px solid var(--line-strong);border-radius:14px;overflow:hidden;background:var(--surface)}
+.lt-table .tr{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.6fr);gap:16px;padding:14px 20px;border-top:1px solid var(--line)}
+.lt-table .tr:first-child{border-top:0}
+.lt-table .th{background:var(--text);color:var(--surface);font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
+.lt-table .tr span:first-child{font-weight:600}
+.lt-table .th span:first-child{font-weight:500}
+.lt-qa{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:48px}
+.lt-qa h3{font-family:var(--body);font-weight:600;font-size:16px;letter-spacing:0;margin-bottom:12px}
+.lt-qa ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.lt-qa li{display:flex;gap:10px;align-items:baseline;font-size:15.5px}
+.lt-qa li::before{content:"✓";color:#2f7d62;font-weight:600}
+@media (max-width:900px){.lt-try{grid-template-columns:minmax(0,1fr)}.lt-phone{justify-self:center;height:640px}.lt-qa{grid-template-columns:minmax(0,1fr)}.lt-table .tr{grid-template-columns:minmax(0,1fr);gap:2px}}
+"""),
 }
 
 PLAY = '<svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>'
@@ -295,8 +373,10 @@ def page(slug):
       "leftova": ["Short-form video","Social media ads","Motion graphics","App promo video","Reels / TikTok","Illustration"],
       "streak86": ["UI/UX design","Mobile app design","Prototyping","Design systems","Wireframing","Gamification"],
       "stillwater": ["Kajabi","Landing page design","Booking flow","Checkout optimisation","Email automation","Mobile responsive"],
+      "lowtide": ["Kajabi","Landing page design","Booking flow","Custom checkout fields","Email automation","Mobile-first"],
     }[slug]
-    tools = {"stillwater": ["Code-driven motion (HTML/CSS/JS)","Claude (AI)","AI image generation","ffmpeg"],
+    tools = {"lowtide": ["HTML/CSS/JS","Claude (AI)","AI image generation","Playwright (testing)","ffmpeg"],
+             "stillwater": ["Code-driven motion (HTML/CSS/JS)","Claude (AI)","AI image generation","ffmpeg"],
              "streak86": ["Figma","Code-driven motion (HTML/CSS/JS)","Claude (AI)","ffmpeg"]}.get(slug, ["Code-driven motion (HTML/CSS/JS)","Claude (AI)","ffmpeg"])
     role = [r.strip()[0].upper()+r.strip()[1:] for r in dict(p["facts"])["Role"].replace(" and ", ", ").split(",")]
     tags = lambda xs: "".join(f'<li class="tag">{x}</li>' for x in xs)
@@ -334,6 +414,7 @@ def page(slug):
         <p class="tagline">{p['tagline']}</p>
         <p class="lede">{p['summary']}</p>
         <span class="concept">{p['concept']}</span>
+        {p.get('cta', '')}
       </div>
       <dl class="facts">{facts}</dl>
     </div>

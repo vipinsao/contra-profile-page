@@ -426,6 +426,13 @@ footer a:hover{color:var(--text)}
 .wlink .arr{transition:transform .25s var(--ease)}
 .wcard:hover .wlink .arr{transform:translateX(6px)}
 .wcard:hover .wlink{color:var(--teal)}
+.wcard.feature{grid-column:1/-1;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);align-items:center;gap:clamp(18px,3vw,40px)}
+.wcard.feature .wmedia{aspect-ratio:16/9}
+.wcard.feature h3{font-size:clamp(34px,4vw,54px)}
+.wtag.new{background:var(--teal);color:#06140f;border-color:transparent;font-weight:500}
+.wfeat{list-style:none;margin:6px 0 4px;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.wfeat li{font-size:12.5px;padding:4px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--muted)}
+@media (max-width:900px){.wcard.feature{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:720px){.work-grid{grid-template-columns:minmax(0,1fr)}}
 
 
@@ -569,10 +576,16 @@ footer a:hover{color:var(--text)}
   <section class="work wrap" id="work" data-scene="Selected work">
     <div class="sec-head reveal">
       <span class="eyebrow">Selected work · 2026</span>
-      <h2>Four briefs. Four <span class="grad">different worlds.</span></h2>
-      <p class="lede">Each piece answers a real kind of job post: a SaaS demo, a social ad, a UI/UX case study and a Kajabi build. Hover to preview, open one for the full story.</p>
+      <h2>Five briefs. Five <span class="grad">different worlds.</span></h2>
+      <p class="lede">Each piece answers a real kind of job post: a SaaS demo, a social ad, a UI/UX case study and two Kajabi builds, one of them a live prototype you can click through. Hover to preview, open one for the full story.</p>
     </div>
     <div class="work-grid">
+      <a class="wcard feature reveal" href="work/lowtide/" data-video="assets/work/lowtide.mp4">
+        <div class="wmedia"><img src="assets/work/lowtide.jpg" alt="Low Tide House retreat page prototype" loading="lazy"><span class="wtag new">New · Live prototype</span><span class="wplay" aria-hidden="true">▶ Preview</span></div>
+        <div class="winfo"><span class="wmeta mono">Kajabi retreat page + booking · Interactive</span><h3>Low Tide House</h3><p>A retreat page that books itself. Pick a date and a room, see live availability, register and get a confirmation email. Every block is mapped to the Kajabi feature behind it.</p>
+          <ul class="wfeat"><li>Room selection</li><li>Limited availability</li><li>Waitlist</li><li>Kajabi checkout</li><li>Automations</li></ul>
+          <span class="wlink">View case study and try it <span class="arr" aria-hidden="true">→</span></span></div>
+      </a>
       <a class="wcard reveal" href="work/driftlens/" data-video="assets/work/driftlens.mp4">
         <div class="wmedia"><img src="assets/work/driftlens.jpg" alt="Driftlens product demo cover" loading="lazy"><span class="wtag">Concept</span><span class="wplay" aria-hidden="true">▶ Preview</span></div>
         <div class="winfo"><span class="wmeta mono">SaaS product demo · 16:9 · 0:23</span><h3>Driftlens</h3><p>Docs that keep up with your code. One API change, followed from pull request to fix.</p><span class="wlink">View case study <span class="arr" aria-hidden="true">→</span></span></div>

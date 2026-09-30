@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Low Tide House · Retreat Booking Prototype</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%8C%8A%3C/text%3E%3C/svg%3E">
+<meta name="description" content="Interactive concept prototype of a Kajabi retreat page with date and room selection, limited availability, registration, checkout and confirmation. Fictional retreat, no payments taken.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Albert+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single calm column that walks a guest from "why come" to "you're booked".
+   Cool coastal palette: sea mist ground, deep-sea ink, one coral for scarcity. */
+:root{
+  --mist:#eef2f1; --paper:#f9fbfa; --ink:#14232b; --muted:#5a6a70; --sea:#2d5b67; --sea-2:#d3dfdf; --sea-3:#e5eded;
+  --sand:#ece5d8; --coral:#c2654b; --ok:#2f7d62; --line:rgba(20,35,43,.12); --line-2:rgba(20,35,43,.22);
+  --serif:"Newsreader",Georgia,"Times New Roman",serif; --sans:"Albert Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:14px; --ease:cubic-bezier(.2,.8,.2,1); color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--mist);color:var(--ink);font:400 17px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--sea);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.01em;margin:0;text-wrap:balance;line-height:1.08}
+h1 em,h2 em{font-style:italic;color:var(--sea)}
+p{margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+.label{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--sea)}
+section{padding-block:clamp(64px,8vw,104px)}
+.sec-head{display:grid;gap:12px;margin-bottom:clamp(28px,4vw,44px);max-width:640px}
+.sec-head h2{font-size:clamp(34px,4.4vw,52px)}
+.sec-head p{color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-radius:999px;border:1px solid transparent;background:var(--ink);color:var(--paper);font-weight:600;font-size:16px;cursor:pointer;text-decoration:none;transition:background .2s,transform .2s,box-shadow .2s}
+.btn:hover{background:var(--sea);transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+.btn.ghost:hover{background:var(--paper);border-color:var(--sea)}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none}
+.btn.full{width:100%}
+
+/* demo strip + build notes */
+.demo{background:var(--ink);color:#dfe8e8;font-size:13px;padding:8px clamp(16px,4vw,40px);display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.demo a{color:#fff;font-weight:600;text-decoration:none}
+.demo a:hover{text-decoration:underline}
+.demo .tog{display:inline-flex;align-items:center;gap:8px;background:none;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:999px;padding:4px 12px;cursor:pointer;font-size:12.5px}
+.demo .tog[aria-pressed="true"]{background:#f0c36a;border-color:#f0c36a;color:var(--ink)}
+.note{display:none;font:500 11px/1.4 var(--mono);letter-spacing:.02em;background:#fff5d6;color:#5b4410;border:1px dashed #d6a93b;border-radius:8px;padding:6px 9px;margin-top:10px;max-width:46ch}
+.note b{font-weight:600}
+body.notes .note{display:block}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--mist) 90%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--serif);font-size:21px;font-weight:500}
+.logo svg{width:28px;height:28px}
+.nav nav{display:flex;gap:22px;align-items:center}
+.nav nav a{text-decoration:none;font-size:15px;color:var(--muted)}
+.nav nav a:hover{color:var(--ink)}
+.nav nav a.btn{color:var(--paper)}
+.nav nav a.btn:hover{color:#fff}
+.nav .btn{padding:9px 18px;font-size:14.5px}
+
+/* hero */
+.hero{padding:0;position:relative}
+.hero-img{position:relative;height:min(78vh,720px);min-height:460px;overflow:hidden}
+.hero-img img{width:100%;height:100%;object-fit:cover;object-position:72% 60%}
+.hero-img::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,26,33,.78) 0%,rgba(14,26,33,.45) 45%,rgba(14,26,33,0) 75%),linear-gradient(180deg,rgba(14,26,33,0) 45%,rgba(14,26,33,.55) 100%)}
+.hero-copy{position:absolute;left:0;right:0;bottom:0;z-index:1;color:#fff;padding-bottom:clamp(28px,5vw,56px)}
+.hero-copy .label{color:#e2eeee}
+.hero h1{font-size:clamp(42px,6.6vw,84px);margin:12px 0 14px;max-width:15ch}
+.hero h1 em{color:#fff}
+.hero-copy p{max-width:52ch;color:#eef4f4;font-size:clamp(16px,1.5vw,19px)}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.hero-cta .btn{background:#fff;color:var(--ink)}
+.hero-cta .btn:hover{background:var(--sea-2)}
+.hero-cta .btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line);background:var(--paper)}
+.facts div{padding:18px clamp(12px,2vw,24px);border-right:1px solid var(--line);min-width:0}
+.facts div:last-child{border-right:0}
+.facts b{display:block;font-family:var(--serif);font-size:22px;font-weight:500}
+.facts span{font-size:14px;color:var(--muted)}
+
+/* intro + included */
+.intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:center}
+.intro .ph{border-radius:var(--r);overflow:hidden;aspect-ratio:4/3}
+.intro .ph img{width:100%;height:100%;object-fit:cover}
+.intro p{color:var(--muted);margin-top:14px}
+.incl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:clamp(36px,5vw,56px)}
+.incl li{list-style:none;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;font-size:15.5px}
+.incl svg{flex:none;width:22px;height:22px;stroke:var(--sea);fill:none;stroke-width:1.6;margin-top:2px}
+.incl ul{margin:0;padding:0;display:contents}
+
+/* dates */
+.dates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.date{position:relative;text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:var(--r);padding:18px 18px 16px;cursor:pointer;display:grid;gap:4px;transition:border-color .2s,box-shadow .2s,transform .2s}
+.date:hover{border-color:var(--sea);transform:translateY(-2px)}
+.date[aria-checked="true"]{border-color:var(--sea);box-shadow:0 0 0 3px var(--sea-2)}
+.date .nm{font-family:var(--serif);font-size:23px}
+.date .dt{color:var(--muted);font-size:15px}
+.date .av{margin-top:8px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:7px}
+.date .av::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.date .av.low{color:var(--coral)}.date .av.low::before{background:var(--coral)}
+.date .tick{position:absolute;top:14px;right:14px;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line-2);display:grid;place-items:center}
+.date[aria-checked="true"] .tick{background:var(--sea);border-color:var(--sea)}
+.date[aria-checked="true"] .tick::after{content:"";width:8px;height:5px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+
+/* rooms */
+.rooms{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.room{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:grid;grid-template-rows:auto 1fr;transition:box-shadow .3s}
+.room:hover{box-shadow:0 24px 50px -30px rgba(20,35,43,.45)}
+.room .ph{position:relative;aspect-ratio:3/2;overflow:hidden}
+.room .ph img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.room:hover .ph img{transform:scale(1.03)}
+.room .badge{position:absolute;top:12px;left:12px;background:rgba(249,251,250,.92);border-radius:999px;padding:5px 11px;font-size:13px;font-weight:600;display:flex;gap:6px;align-items:center}
+.room .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.room .badge.low{color:var(--coral)}.room .badge.low::before{background:var(--coral)}
+.room .badge.out{color:var(--muted)}.room .badge.out::before{background:var(--muted)}
+.room.soldout .ph img{filter:grayscale(.8) brightness(.95)}
+.room .body{padding:20px 22px 22px;display:grid;gap:10px;align-content:start}
+.room h3{font-size:28px}
+.room p{color:var(--muted);font-size:15.5px}
+.room .meta{display:flex;flex-wrap:wrap;gap:6px}
+.room .meta span{font-size:13px;background:var(--sea-3);border-radius:999px;padding:3px 10px}
+.room .buy{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px;padding-top:14px;border-top:1px solid var(--line);flex-wrap:wrap}
+.room .price b{font-family:var(--serif);font-size:30px;font-weight:500}
+.room .price span{color:var(--muted);font-size:14px;margin-left:4px}
+.dots{display:flex;gap:5px;margin-top:2px}
+.dots i{width:18px;height:6px;border-radius:3px;background:var(--sea)}
+.dots i.gone{background:var(--sea-2)}
+
+/* booking */
+.booking{background:var(--paper);border-block:1px solid var(--line)}
+.book-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
+.steps{display:flex;gap:6px;list-style:none;margin:0 0 24px;padding:0;flex-wrap:wrap}
+.steps li{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--muted);padding:6px 12px 6px 6px;border-radius:999px;background:var(--mist)}
+.steps li i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:600;background:#fff;border:1px solid var(--line-2)}
+.steps li.on{color:var(--ink);background:var(--sea-2)}
+.steps li.on i{background:var(--sea);color:#fff;border-color:var(--sea)}
+.steps li.done i{background:var(--ok);color:#fff;border-color:var(--ok)}
+.panel{display:grid;gap:18px}
+.empty{border:1.5px dashed var(--line-2);border-radius:var(--r);padding:28px;color:var(--muted);text-align:center;display:grid;gap:12px;justify-items:center}
+.field{display:grid;gap:6px}
+.field label,.field legend{font-weight:600;font-size:14.5px}
+.field .hint{font-weight:400;color:var(--muted);font-size:13.5px}
+.field input[type=text],.field input[type=email],.field input[type=tel],.field select,.field textarea{width:100%;background:#fff;border:1px solid var(--line-2);border-radius:10px;padding:12px 14px;font-size:16px;transition:border-color .2s,box-shadow .2s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--sea);box-shadow:0 0 0 3px var(--sea-2)}
+.field textarea{min-height:84px;resize:vertical}
+.field .err{color:var(--coral);font-size:13.5px;display:none}
+.field.bad input,.field.bad select{border-color:var(--coral)}
+.field.bad .err{display:block}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.opt span{display:block;padding:9px 14px;border:1px solid var(--line-2);border-radius:999px;font-size:14.5px;background:#fff;transition:all .2s}
+.opt input:checked+span{background:var(--sea);border-color:var(--sea);color:#fff}
+.opt input:focus-visible+span{outline:2px solid var(--sea);outline-offset:2px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+.check input{width:20px;height:20px;margin-top:3px;accent-color:var(--sea);flex:none}
+.summary{position:sticky;top:84px;background:var(--mist);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.summary .ph{aspect-ratio:16/9;overflow:hidden}
+.summary .ph img{width:100%;height:100%;object-fit:cover}
+.summary .in{padding:18px 20px;display:grid;gap:10px}
+.summary h3{font-size:24px}
+.summary dl{margin:0;display:grid;gap:6px;font-size:14.5px}
+.summary dl div{display:flex;justify-content:space-between;gap:12px}
+.summary dt{color:var(--muted)}
+.summary dd{margin:0;font-weight:500;text-align:right}
+.summary .tot{border-top:1px solid var(--line);padding-top:10px;font-size:16px}
+.summary .tot dd{font-family:var(--serif);font-size:24px}
+.change{background:none;border:0;padding:0;color:var(--sea);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-size:14px;justify-self:start}
+.pay{border:1px solid var(--line-2);border-radius:var(--r);background:#fff;padding:20px;display:grid;gap:14px}
+.pay .head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.pay .head b{font-size:16px}
+.pay .lock{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}
+.card{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:8px}
+.card div{border:1px solid var(--line-2);border-radius:10px;padding:10px 12px;font-family:var(--mono);font-size:14px;color:var(--muted);background:var(--mist);min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.demo-note{font-size:13.5px;color:var(--muted);background:var(--sea-3);border-radius:10px;padding:10px 12px}
+.spin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.done-card{display:grid;gap:16px}
+.done-card .big{display:flex;gap:14px;align-items:center}
+.done-card .big i{width:48px;height:48px;border-radius:50%;background:var(--ok);display:grid;place-items:center;flex:none}
+.done-card .big i::after{content:"";width:16px;height:9px;border:3px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(2px,-2px)}
+.done-card h3{font-size:34px}
+.email{border:1px solid var(--line-2);border-radius:var(--r);background:#fff;overflow:hidden;box-shadow:0 20px 40px -30px rgba(20,35,43,.5)}
+.email .eh{padding:12px 16px;border-bottom:1px solid var(--line);font-size:13.5px;display:grid;gap:2px;background:var(--mist)}
+.email .eh b{font-size:15px}
+.email .eb{padding:18px 20px;display:grid;gap:10px;font-size:15px}
+.email .eb h4{font-family:var(--serif);font-size:24px;font-weight:500;margin:0}
+.email .eb ul{margin:0;padding-left:18px;color:var(--muted)}
+.after{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.after li{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;font-size:14.5px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.after b{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--sea);text-transform:uppercase;padding-top:2px}
+
+/* schedule */
+.sched{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.day{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.day h3{font-size:24px;margin-bottom:12px}
+.day ol{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.day li{display:grid;grid-template-columns:56px minmax(0,1fr);gap:10px;font-size:15px}
+.day li b{font-family:var(--mono);font-weight:500;font-size:13px;color:var(--sea);padding-top:2px}
+.silent{font-size:12px;font-family:var(--mono);color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+/* teacher + faq */
+.teacher{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(24px,5vw,64px);align-items:center}
+.teacher .ph{border-radius:var(--r);overflow:hidden;aspect-ratio:1}
+.teacher .ph img{width:100%;height:100%;object-fit:cover}
+.teacher blockquote{margin:16px 0 0;font-family:var(--serif);font-style:italic;font-size:clamp(22px,2.4vw,28px);line-height:1.35}
+.teacher p{color:var(--muted);margin-top:14px}
+.faq{display:grid;gap:10px;max-width:780px}
+.faq details{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:0 18px}
+.faq summary{cursor:pointer;padding:16px 0;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:22px;line-height:1;color:var(--sea);transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding-bottom:16px;color:var(--muted)}
+footer{background:var(--ink);color:#c5d2d3;padding-block:40px calc(env(safe-area-inset-bottom,0px) + 100px);font-size:14.5px}
+footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+footer .logo{color:#fff}
+
+/* sticky mobile bar */
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--paper);border-top:1px solid var(--line);padding:10px 16px calc(env(safe-area-inset-bottom,0px) + 10px);display:none;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 -10px 30px -15px rgba(20,35,43,.3)}
+.mbar small{display:block;color:var(--muted);font-size:12.5px}
+.mbar b{font-size:15px}
+.mbar .btn{padding:11px 20px}
+.mbar[hidden],.mbar.away{display:none!important}
+@media (max-width:560px){.hero-img::after{background:linear-gradient(180deg,rgba(14,26,33,.15) 0%,rgba(14,26,33,.35) 35%,rgba(14,26,33,.82) 100%)}}
+
+.flash{animation:flash 1.2s var(--ease)}
+@keyframes flash{0%{box-shadow:0 0 0 0 rgba(45,91,103,.5)}100%{box-shadow:0 0 0 18px rgba(45,91,103,0)}}
+
+@media (max-width:900px){
+  .nav nav a:not(.btn){display:none}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .facts div:nth-child(2){border-right:0}
+  .facts div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .intro,.teacher{grid-template-columns:minmax(0,1fr)}
+  .incl{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dates{grid-template-columns:minmax(0,1fr)}
+  .rooms{grid-template-columns:minmax(0,1fr)}
+  .book-grid{grid-template-columns:minmax(0,1fr)}
+  .summary{position:static;order:-1}
+  .sched{grid-template-columns:minmax(0,1fr)}
+  .mbar{display:flex}
+}
+@media (max-width:420px){.nav .long{display:none}.logo{font-size:19px}.demo{font-size:12px}}
+@media (max-width:560px){
+  .incl{grid-template-columns:minmax(0,1fr)}
+  .row2{grid-template-columns:minmax(0,1fr)}
+  .card{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .card div:first-child{grid-column:1/-1}
+  .after li{grid-template-columns:minmax(0,1fr);gap:2px}
+  .hero-img{min-height:540px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="demo" role="note">
+  <span>Interactive prototype by Vipin Sao · fictional retreat, AI-generated photos · no payment is taken</span>
+  <span style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+    <button class="tog" id="notesBtn" type="button" aria-pressed="false">Show Kajabi build notes</button>
+    <a href="../" target="_top">← Case study</a>
+  </span>
+</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Low Tide House, top of page">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#2d5b67"/><path d="M5 17c3-2.4 5.5-2.4 8.2 0s5.5 2.4 8.2 0 4.6-2 5.6-1.2M5 22c3-2.4 5.5-2.4 8.2 0s5.5 2.4 8.2 0 4.6-2 5.6-1.2" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/><circle cx="21" cy="10" r="2.6" fill="#f3e3c3"/></svg>
+      Low Tide House
+    </a>
+    <nav aria-label="Page">
+      <a href="#retreat">The retreat</a><a href="#rooms">Rooms</a><a href="#schedule">Schedule</a><a href="#faq">FAQ</a>
+      <a class="btn" href="#dates">Reserve<span class="long"> a place</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-img">
+      <img src="img/house.jpg" alt="Low Tide House, a flint house on the salt marsh at dawn">
+      <div class="hero-copy"><div class="wrap">
+        <span class="label">Small-group meditation retreats · North Norfolk coast</span>
+        <h1>Two quiet days where <em>the sea goes out.</em></h1>
+        <p>Weekend retreats for 7 guests at a restored flint house on the salt marsh. Silent mornings, guided sits, simple food and long walks at low tide.</p>
+        <div class="hero-cta"><a class="btn" href="#dates">Choose your dates</a><a class="btn ghost" href="#retreat">What's included</a></div>
+        <div class="note"><b>Kajabi:</b> Landing Page built from the client's own copy and photos. Hero section with two buttons linking to anchors on the same page.</div>
+      </div></div>
+    </div>
+    <div class="facts">
+      <div><b>2 nights</b><span>Fri 4pm – Sun 2pm</span></div>
+      <div><b>7 guests</b><span>3 private rooms, 4 shared beds</span></div>
+      <div><b>All meals</b><span>Vegetarian, cooked in the house</span></div>
+      <div><b>Beginners welcome</b><span>No experience needed</span></div>
+    </div>
+  </section>
+
+  <section id="retreat">
+    <div class="wrap">
+      <div class="intro">
+        <div>
+          <span class="label">The retreat</span>
+          <h2 style="font-size:clamp(34px,4.4vw,52px);margin-top:12px">Slow down with <em>the tide.</em></h2>
+          <p>Each weekend follows the rhythm of the coast. We sit together at dawn, keep the mornings silent, and walk the marsh when the water pulls back. You don't need any experience. You only need to arrive.</p>
+          <p>The house is new to retreats, so every group is small. Seven guests, one teacher, and plenty of room to be quiet.</p>
+        </div>
+        <div class="ph"><img src="img/meditation.jpg" alt="The meditation room: floor cushions and blankets in front of tall windows over the marsh" loading="lazy"></div>
+      </div>
+      <ul class="incl" aria-label="What's included">
+        <li><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3z"/><path d="M9 20v-6h6v6"/></svg>Two nights in the house, linen and towels provided</li>
+        <li><svg viewBox="0 0 24 24"><path d="M4 11h16a8 8 0 01-16 0z"/><path d="M9 4c0 2 1 2 1 4M14 4c0 2 1 2 1 4"/></svg>All meals, vegetarian and cooked fresh</li>
+        <li><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/></svg>Six guided meditation sessions</li>
+        <li><svg viewBox="0 0 24 24"><path d="M2 15c3-2 5-2 8 0s5 2 8 0 3-1.5 4-1"/><path d="M2 19c3-2 5-2 8 0s5 2 8 0 3-1.5 4-1"/></svg>Silent walks on the marsh at low tide</li>
+        <li><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>A one-to-one check-in with your teacher</li>
+        <li><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 11h6M9 15h6"/></svg>A practice guide to take home</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="dates" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Step 1 · Choose your dates</span>
+        <h2>Upcoming <em>retreats</em></h2>
+        <p>Places are limited to seven per weekend. Availability updates as people book.</p>
+      </div>
+      <div class="dates" id="dateList" role="radiogroup" aria-label="Retreat dates"></div>
+      <div class="note"><b>Kajabi:</b> each date is its own set of Offers, so availability is tracked per weekend. Past dates are simply unpublished.</div>
+    </div>
+  </section>
+
+  <section id="rooms" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Step 2 · Choose your room</span>
+        <h2>Where you'll <em>sleep</em></h2>
+        <p id="roomsFor">Showing availability for Winter Stillness, 6–8 November 2026.</p>
+      </div>
+      <div class="rooms" id="roomList"></div>
+      <div class="note"><b>Kajabi:</b> one Offer per room type per date, with an Offer <b>quantity limit</b> (Private = 3, Shared = 4). When the limit is reached Kajabi shows the sold-out page, which here is the waitlist form.</div>
+    </div>
+  </section>
+
+  <section class="booking" id="booking" aria-labelledby="bookTitle">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Step 3 · Reserve</span>
+        <h2 id="bookTitle">Reserve <em>your place</em></h2>
+      </div>
+      <ol class="steps" id="steps" aria-label="Booking progress">
+        <li data-s="1"><i>1</i>Room</li><li data-s="2"><i>2</i>Your details</li><li data-s="3"><i>3</i>Payment</li><li data-s="4"><i>4</i>Confirmed</li>
+      </ol>
+      <div class="book-grid">
+        <div class="panel" id="panel" aria-live="polite"></div>
+        <aside class="summary" id="summary" hidden></aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="schedule">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">The weekend</span>
+        <h2>A weekend at <em>Low Tide House</em></h2>
+        <p>Times shift a little with the tide table. Mornings are held in silence until lunch.</p>
+      </div>
+      <div class="sched">
+        <div class="day"><h3>Friday</h3><ol><li><b>16:00</b>Arrive, tea and settle in</li><li><b>18:00</b>Opening sit and introductions</li><li><b>19:00</b>Supper together</li><li><b>21:00</b>Evening sit, then rest</li></ol></div>
+        <div class="day"><h3>Saturday <span class="silent">· silent morning</span></h3><ol><li><b>07:00</b>Dawn sit</li><li><b>08:00</b>Breakfast in silence</li><li><b>10:00</b>Guided practice</li><li><b>13:00</b>Lunch, talking resumes</li><li><b>15:00</b>Walk the marsh at low tide</li><li><b>17:30</b>Sit and one-to-one check-ins</li><li><b>19:00</b>Supper</li></ol></div>
+        <div class="day"><h3>Sunday</h3><ol><li><b>07:00</b>Dawn sit</li><li><b>08:00</b>Breakfast</li><li><b>10:00</b>Closing practice and circle</li><li><b>12:30</b>Lunch</li><li><b>14:00</b>Depart</li></ol></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap teacher">
+      <div class="ph"><img src="img/meditation-sm.jpg" alt="Morning light in the meditation room" loading="lazy"></div>
+      <div>
+        <span class="label">Your teacher</span>
+        <blockquote>“Nothing to achieve. Just a quiet house, the sound of the marsh, and time to notice what's already here.”</blockquote>
+        <p>Retreats are led by the house's founder, who has taught meditation to beginners for over a decade. Small groups mean everyone gets time and attention.</p>
+        <div class="note"><b>Kajabi:</b> teacher section filled from the client's own bio and photo.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head"><span class="label">Questions</span><h2>Before you <em>book</em></h2></div>
+      <div class="faq">
+        <details><summary>I've never meditated. Is this for me?</summary><p>Yes. Every session is guided, and the first evening covers the basics. About half of each group is new to meditation.</p></details>
+        <details><summary>Is the whole weekend silent?</summary><p>Only the mornings, until lunch. The rest of the time you can talk, rest, read or walk.</p></details>
+        <details><summary>Can I share a room with a friend?</summary><p>Yes. Book two shared places and add your friend's name in “Anything we should know”. We'll put you together.</p></details>
+        <details><summary>What if I need to cancel?</summary><p>Example policy for this prototype: a full refund up to 30 days before, then credit toward a future retreat. The real policy comes from the host.</p></details>
+        <details><summary>How do I get there?</summary><p>By train to the nearest station, where we collect you at 15:30 on Friday, or by car with free parking at the house.</p></details>
+      </div>
+      <div class="note"><b>Kajabi:</b> FAQ section. Directions and packing list are repeated in the reminder email so guests don't have to come back here.</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="logo" style="font-size:19px">Low Tide House</span>
+    <span>Concept prototype by Vipin Sao · Fictional retreat · Photography AI-generated</span>
+  </div>
+</footer>
+
+<div class="mbar" id="mbar" aria-label="Quick reserve">
+  <div><small id="mbarDate">Winter Stillness · 6–8 Nov</small><b id="mbarPrice">From £345</b></div>
+  <a class="btn" href="#rooms">Reserve</a>
+</div>
+
+<script>
+/* ---------- data (the host edits this; in Kajabi it lives in Offers) ---------- */
+const ROOMS = {
+  private: {name:'Private room', img:'img/private.jpg', price:495, unit:'per person', cap:3,
+    blurb:'A double room to yourself, with a view over the marsh. Bathroom on the landing, shared with one other room.',
+    meta:['Double bed','Marsh view','Sleeps 1']},
+  shared: {name:'Shared room', img:'img/shared.jpg', price:345, unit:'per bed', cap:4,
+    blurb:'A bed in a calm twin room under the eaves, shared with one other guest. Come with a friend and we\'ll put you together.',
+    meta:['Two single beds','Under the eaves','Priced per bed']}
+};
+const DATES = [
+  {id:'nov', name:'Winter Stillness', dates:'Fri 6 – Sun 8 November 2026', short:'6–8 Nov', left:{private:1, shared:2}},
+  {id:'jan', name:'New Year Reset',   dates:'Fri 8 – Sun 10 January 2027', short:'8–10 Jan', left:{private:0, shared:3}},
+  {id:'mar', name:'Spring Silence',   dates:'Fri 19 – Sun 21 March 2027',  short:'19–21 Mar', left:{private:3, shared:4}}
+];
+const START = JSON.parse(JSON.stringify(DATES.map(d => d.left)));
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const gbp = n => '£' + n.toLocaleString('en-GB');
+let state = {date:'nov', room:null, step:1, guest:null};
+const cur = () => DATES.find(d => d.id === state.date);
+const totalLeft = d => d.left.private + d.left.shared;
+
+function avText(n, cap) {
+  if (n === 0) return {t:'Sold out', c:'out'};
+  if (n === 1) return {t:'Last place', c:'low'};
+  return {t:`${n} of ${cap} left`, c: n / cap <= .5 ? 'low' : ''};
+}
+
+/* ---------- dates ---------- */
+function renderDates() {
+  $('#dateList').innerHTML = DATES.map(d => {
+    const n = totalLeft(d), cls = n === 0 ? 'low' : n <= 3 ? 'low' : '';
+    const txt = n === 0 ? 'Fully booked' : n <= 3 ? `Only ${n} places left` : `${n} places left`;
+    return `<button class="date" type="button" role="radio" aria-checked="${d.id === state.date}" data-id="${d.id}">
+      <span class="tick" aria-hidden="true"></span><span class="nm">${d.name}</span><span class="dt">${d.dates}</span><span class="av ${cls}">${txt}</span></button>`;
+  }).join('');
+  document.querySelectorAll('.date').forEach(b => b.addEventListener('click', () => pickDate(b.dataset.id)));
+}
+function pickDate(id) {
+  state.date = id;
+  if (state.step < 4) { state.room = null; state.step = 1; }
+  renderAll();
+}
+
+/* ---------- rooms ---------- */
+function renderRooms() {
+  const d = cur();
+  $('#roomsFor').textContent = `Showing availability for ${d.name}, ${d.dates.replace(/^Fri |Sun /g, '')}.`;
+  $('#roomList').innerHTML = Object.entries(ROOMS).map(([k, r]) => {
+    const n = d.left[k], a = avText(n, r.cap);
+    const dots = Array.from({length:r.cap}, (_, i) => `<i class="${i < r.cap - n ? 'gone' : ''}"></i>`).join('');
+    return `<article class="room ${n === 0 ? 'soldout' : ''}" data-room="${k}">
+      <div class="ph"><img src="${r.img}" alt="${r.name} at Low Tide House" loading="lazy"><span class="badge ${a.c}">${a.t}</span></div>
+      <div class="body">
+        <h3>${r.name}</h3><p>${r.blurb}</p>
+        <div class="meta">${r.meta.map(m => `<span>${m}</span>`).join('')}</div>
+        <div class="dots" aria-label="${n} of ${r.cap} available">${dots}</div>
+        <div class="buy"><div class="price"><b>${gbp(r.price)}</b><span>${r.unit}</span></div>
+          ${n > 0 ? `<button class="btn" type="button" data-choose="${k}">Choose this room</button>`
+                  : `<button class="btn ghost" type="button" data-wait="${k}">Join the waitlist</button>`}</div>
+      </div></article>`;
+  }).join('');
+  document.querySelectorAll('[data-choose]').forEach(b => b.addEventListener('click', () => { state.room = b.dataset.choose; state.step = 2; renderAll(); goBooking(); }));
+  document.querySelectorAll('[data-wait]').forEach(b => b.addEventListener('click', () => { state.room = b.dataset.wait; state.step = 'wait'; renderAll(); goBooking(); }));
+}
+function goBooking() {
+  $('#booking').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+  setTimeout(() => { const f = $('#panel input, #panel button'); f && f.focus({preventScroll:true}); }, 600);
+}
+
+/* ---------- booking panel ---------- */
+function renderSteps() {
+  document.querySelectorAll('#steps li').forEach(li => {
+    const s = +li.dataset.s, st = state.step === 'wait' ? 1 : state.step;
+    li.classList.toggle('on', s === st); li.classList.toggle('done', s < st);
+    li.setAttribute('aria-current', s === st ? 'step' : 'false');
+  });
+}
+function renderSummary() {
+  const box = $('#summary');
+  if (!state.room) { box.hidden = true; return; }
+  const d = cur(), r = ROOMS[state.room];
+  box.hidden = false;
+  box.innerHTML = `<div class="ph"><img src="${r.img.replace('.jpg', '-sm.jpg')}" alt=""></div><div class="in">
+    <span class="label">Your booking</span><h3>${d.name}</h3>
+    <dl><div><dt>Dates</dt><dd>${d.dates}</dd></div><div><dt>Room</dt><dd>${r.name}</dd></div><div><dt>Includes</dt><dd>2 nights, all meals</dd></div>
+    <div class="tot"><dt>Total</dt><dd>${gbp(r.price)}</dd></div></dl>
+    ${state.step !== 4 ? '<button class="change" type="button" id="chg">Change room or dates</button>' : ''}</div>`;
+  const c = $('#chg'); if (c) c.addEventListener('click', () => { state.step = 1; state.room = null; renderAll(); $('#dates').scrollIntoView({behavior:'smooth'}); });
+}
+function renderPanel() {
+  const p = $('#panel'), d = cur(), r = state.room && ROOMS[state.room];
+  if (state.step === 1 || !r) {
+    p.innerHTML = `<div class="empty"><b>Choose a date and a room to start.</b><span>Your place isn't held until payment is complete.</span><a class="btn ghost" href="#rooms">See the rooms</a></div>`;
+    return;
+  }
+  if (state.step === 'wait') {
+    p.innerHTML = `<form class="panel" id="waitForm" novalidate>
+      <div><h3 style="font-size:28px">The ${r.name.toLowerCase()} is full for ${d.name}</h3><p style="color:var(--muted);margin-top:6px">Join the waitlist and we'll email you first if a place opens.</p></div>
+      <div class="row2">${field('wname','Full name','text','given-name family-name',true)}${field('wemail','Email','email','email',true)}</div>
+      <button class="btn" type="submit">Join the waitlist</button>
+      <div class="note"><b>Kajabi:</b> sold-out page with a Form. Submitting adds the tag <b>Waitlist · ${d.short} · ${r.name}</b> and notifies the host.</div>
+    </form>`;
+    $('#waitForm').addEventListener('submit', e => {
+      e.preventDefault();
+      if (!validate(e.target)) return;
+      const nm = $('#wname').value.trim().split(' ')[0];
+      p.innerHTML = `<div class="done-card"><div class="big"><i aria-hidden="true"></i><h3>You're on the list, ${esc(nm)}.</h3></div>
+        <p style="color:var(--muted)">We'll email ${esc($('#wemail').value.trim())} if a ${r.name.toLowerCase()} opens up for ${d.name}. Shared places may still be available.</p>
+        <button class="btn ghost" type="button" id="back">Look at other rooms</button></div>`;
+      $('#back').addEventListener('click', () => { state.step = 1; state.room = null; renderAll(); $('#rooms').scrollIntoView({behavior:'smooth'}); });
+    });
+    return;
+  }
+  if (state.step === 2) {
+    const g = state.guest || {};
+    p.innerHTML = `<form class="panel" id="details" novalidate>
+      <div class="row2">${field('name','Full name','text','name',true,g.name)}${field('email','Email','email','email',true,g.email)}</div>
+      <div class="row2">${field('phone','Phone','tel','tel',false,g.phone,'For arrival day only')}
+        <div class="field"><label for="diet">Dietary needs</label><select id="diet" name="diet">
+          ${['No special requirements','Vegan','Gluten-free','Dairy-free','Nut allergy','Other (tell us below)'].map(o => `<option${g.diet === o ? ' selected' : ''}>${o}</option>`).join('')}</select></div></div>
+      <fieldset class="field"><legend>Meditation experience</legend><div class="opts">
+        ${['New to meditation','Some experience','Regular practice'].map((o, i) => `<label class="opt"><input type="radio" name="exp" value="${o}" ${(g.exp ? g.exp === o : i === 0) ? 'checked' : ''}><span>${o}</span></label>`).join('')}</div></fieldset>
+      <fieldset class="field"><legend>How will you arrive?</legend><div class="opts">
+        ${['Train + station pick-up','Driving, parking at the house'].map((o, i) => `<label class="opt"><input type="radio" name="arr" value="${o}" ${(g.arr ? g.arr === o : i === 0) ? 'checked' : ''}><span>${o}</span></label>`).join('')}</div></fieldset>
+      <div class="field"><label for="notes">Anything we should know? <span class="hint">Health, access, or who you'd like to share with</span></label><textarea id="notes" name="notes">${esc(g.notes || '')}</textarea></div>
+      <div class="field" id="termsF"><label class="check"><input type="checkbox" id="terms" ${g.terms ? 'checked' : ''}> I've read the booking terms and cancellation policy.</label><span class="err">Please confirm you've read the terms.</span></div>
+      <button class="btn full" type="submit">Continue to payment · ${gbp(r.price)}</button>
+      <div class="note"><b>Kajabi:</b> these are <b>custom checkout fields</b> on the Offer (Select, Radio, Text area), so the answers are saved on the guest's contact record.</div>
+    </form>`;
+    $('#details').addEventListener('submit', e => {
+      e.preventDefault();
+      const ok = validate(e.target), t = $('#terms').checked;
+      $('#termsF').classList.toggle('bad', !t);
+      if (!ok || !t) { const b = e.target.querySelector('.bad input, .bad select'); b && b.focus(); return; }
+      const f = new FormData(e.target);
+      state.guest = {name:$('#name').value.trim(), email:$('#email').value.trim(), phone:$('#phone').value.trim(), diet:$('#diet').value, exp:f.get('exp'), arr:f.get('arr'), notes:$('#notes').value, terms:true};
+      state.step = 3; renderAll(); goBooking();
+    });
+    return;
+  }
+  if (state.step === 3) {
+    p.innerHTML = `<div class="pay">
+      <div class="head"><b>Payment</b><span class="lock"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><rect x="1" y="6" width="10" height="7" rx="1.5" fill="currentColor"/><path d="M3 6V4a3 3 0 016 0v2" stroke="currentColor" fill="none" stroke-width="1.5"/></svg>Secure checkout</span></div>
+      <div class="card" aria-label="Card details (demo, disabled)"><div>4242 4242 4242 4242</div><div>12 / 29</div><div>CVC •••</div></div>
+      <p class="demo-note">Demo only. In the live build this step is the host's <b>existing Kajabi checkout</b>, so their Stripe or PayPal setup, receipts and VAT settings stay exactly as they are.</p>
+      <button class="btn full" type="button" id="payBtn">Pay ${gbp(r.price)} and reserve</button>
+      <button class="change" type="button" id="backDetails">← Edit your details</button>
+    </div>`;
+    $('#backDetails').addEventListener('click', () => { state.step = 2; renderAll(); });
+    $('#payBtn').addEventListener('click', e => {
+      const b = e.currentTarget; b.disabled = true; b.innerHTML = '<span class="spin" aria-hidden="true"></span> Processing…';
+      setTimeout(() => {
+        if (cur().left[state.room] > 0) cur().left[state.room]--;
+        state.step = 4; renderAll(); goBooking();
+      }, 1400);
+    });
+    return;
+  }
+  if (state.step === 4) {
+    const g = state.guest, first = g.name.split(' ')[0], left = d.left[state.room];
+    p.innerHTML = `<div class="done-card">
+      <div class="big"><i aria-hidden="true"></i><h3>You're booked, ${esc(first)}.</h3></div>
+      <p style="color:var(--muted)">A confirmation email is on its way to <b>${esc(g.email)}</b>. The ${r.name.toLowerCase()} for ${d.name} now has <b>${left === 0 ? 'no places left' : left + ' left'}</b>${left === 0 ? ', so the next guest will see the waitlist' : ''}.</p>
+      <div class="email" aria-label="Preview of the confirmation email">
+        <div class="eh"><span>From: Low Tide House</span><b>Your place on ${d.name} is confirmed</b></div>
+        <div class="eb"><h4>See you on the marsh, ${esc(first)}.</h4>
+          <p>${d.dates} · ${r.name} · ${gbp(r.price)} paid</p>
+          <ul><li>Arrive from 16:00 on Friday${g.arr.startsWith('Train') ? '. We\'ll meet you at the station at 15:30' : '. Parking is at the house'}</li>
+          <li>Dietary needs noted: ${esc(g.diet)}</li><li>Bring warm layers and boots for the marsh walk</li></ul></div>
+      </div>
+      <ul class="after" aria-label="What happens next">
+        <li><b>Now</b><span>Confirmation email and Kajabi receipt</span></li>
+        <li><b>Now</b><span>Tagged <em>Retreat · ${d.short} · ${r.name}</em></span></li>
+        <li><b>7 days before</b><span>Reminder with directions and packing list</span></li>
+        <li><b>After</b><span>A short feedback email and the practice guide</span></li>
+      </ul>
+      <div class="note"><b>Kajabi:</b> Offer automations send the confirmation email and add the tag. The 7-day reminder is an email scheduled to that tag.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost" type="button" id="again">Book another place</button><button class="btn ghost" type="button" id="reset">Reset the demo</button></div>
+    </div>`;
+    $('#again').addEventListener('click', () => { state.step = 1; state.room = null; renderAll(); $('#dates').scrollIntoView({behavior:'smooth'}); });
+    $('#reset').addEventListener('click', () => { DATES.forEach((d, i) => d.left = {...START[i]}); state = {date:'nov', room:null, step:1, guest:null}; renderAll(); $('#dates').scrollIntoView({behavior:'smooth'}); });
+  }
+}
+function field(id, label, type, ac, req, val = '', hint = '') {
+  return `<div class="field"><label for="${id}">${label}${req ? '' : ' <span class="hint">(optional)</span>'}${hint ? ` <span class="hint">· ${hint}</span>` : ''}</label>
+    <input id="${id}" name="${id}" type="${type}" autocomplete="${ac}" ${req ? 'required' : ''} value="${esc(val || '')}">
+    <span class="err">${type === 'email' ? 'Enter an email like name@example.com.' : 'Please fill this in.'}</span></div>`;
+}
+function validate(form) {
+  let ok = true;
+  form.querySelectorAll('input[required]').forEach(i => {
+    const v = i.value.trim(), good = i.type === 'email' ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) : v.length > 1;
+    i.closest('.field').classList.toggle('bad', !good);
+    i.setAttribute('aria-invalid', !good);
+    if (!good) ok = false;
+  });
+  return ok;
+}
+
+function renderMbar() {
+  const d = cur(), open = Object.entries(ROOMS).filter(([k]) => d.left[k] > 0).map(([, r]) => r.price);
+  $('#mbarDate').textContent = `${d.name} · ${d.short}`;
+  $('#mbarPrice').textContent = open.length ? `From ${gbp(Math.min(...open))}` : 'Fully booked · waitlist open';
+  $('#mbar').hidden = state.step !== 1;
+}
+function renderAll() { renderDates(); renderRooms(); renderSteps(); renderSummary(); renderPanel(); renderMbar(); }
+renderAll();
+
+// the quick-reserve bar only appears once the hero (and its own buttons) has scrolled away
+// (scroll position, not IntersectionObserver, so it also works when the page is embedded in a frame)
+const mbarCheck = () => $('#mbar').classList.toggle('away', scrollY < $('.hero').offsetHeight - 160);
+addEventListener('scroll', mbarCheck, {passive:true}); addEventListener('resize', mbarCheck); mbarCheck();
+
+$('#notesBtn').addEventListener('click', e => {
+  const on = document.body.classList.toggle('notes');
+  e.currentTarget.setAttribute('aria-pressed', on);
+  e.currentTarget.textContent = on ? 'Hide Kajabi build notes' : 'Show Kajabi build notes';
+});
+if (location.hash === '#notes') $('#notesBtn').click();
+</script>
+</body>
+</html>
