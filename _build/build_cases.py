@@ -7,7 +7,7 @@ so this script is not published by GitHub Pages.)
 import json, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-CONTRA_URL = "https://contra.com/"   # ← replace with your Contra profile link (also in index.html)
+CONTRA_URL = "https://contra.com/vipin_sao_z8eilxkm/work?r=vipin_sao_z8eilxkm"   # your Contra profile (also in index.html)
 ORDER = ["driftlens", "leftova", "streak86", "stillwater"]
 
 PROJECTS = {
